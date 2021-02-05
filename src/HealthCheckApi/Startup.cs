@@ -81,13 +81,7 @@ namespace HealthCheckApi
         private static Task WriteResponse(HttpContext context, HealthReport r)
         {
             context.Response.ContentType = "application/json; charset=utf-8";
-
-            var options = new JsonWriterOptions
-            {
-                Indented = true
-            };
-
-            var x = JsonSerializer.Serialize(new
+            var resp = JsonSerializer.Serialize(new
             {
                 status = r.Status.ToString(), 
                 errors = r.Entries.Select(e => new
@@ -97,7 +91,7 @@ namespace HealthCheckApi
                     description = e.Value.Description
                 })
             }, new JsonSerializerOptions());
-            return context.Response.WriteAsync(x);
+            return context.Response.WriteAsync(resp);
         }
     }
 }
